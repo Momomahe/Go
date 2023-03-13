@@ -12,6 +12,9 @@ func main() {
 			//r := []rune{'\u0421', '\u0410', '\u0428', '\u0410', '\u0420', '\u0412', '\u041E'}
 			/*
 			utk variabel r jg bsa digunakan, akan ttpi variabel posisi dibawah dikalikan dngn 2
+			"САШАРВО" adlh alfabet Cyrillic yg dignakan basaha rusia, olh karena itu terdapat error krn mengetik seperti biasa, 
+			shngga mmbuat hasil unicode berbeda degn output yg diperintahkan, hal it disbbkn krn hasil hasil ketikan biasanya
+			menggunakan alfabet latin/roman
 			*/
 			for posisi, loop := range r {
 				fmt.Printf("Character %U '%c' starts at byte position %d\n", loop, loop, posisi)
