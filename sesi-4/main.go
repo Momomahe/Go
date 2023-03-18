@@ -35,7 +35,7 @@ func main() {
 	printKelasData(isidt)
 }
 func getNoFromArgs() (int, error) { //error
-	args := os.Args[1:] //tempt error kalau perintah kosong(krg dari 1/null)
+	args := os.Args[1:] //tempt error kalau perintah kosong(krg dari 1/null/nil
 	if len(args) < 1 {
 		return 0, fmt.Errorf("Masukan no urut absen, contoh : main.go 2")
 	}
