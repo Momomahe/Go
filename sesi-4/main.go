@@ -59,5 +59,5 @@ func printKelasData(isidt *Kelas) {
 	fmt.Println("Nama :", isidt.Nama)
 	fmt.Println("Alamat :", isidt.Alamat)
 	fmt.Println("Pekerjaan :", isidt.Pekerjaan)
-	fmt.Println("Alan memilih kelas golang :", isidt.Alasan)
+	fmt.Println("Alasan memilih kelas golang :", isidt.Alasan)
 }
