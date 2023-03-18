@@ -48,7 +48,7 @@ func main() {
 // 	defer mutex.Unlock()
 // 	//fungsi var boel dataturu gunanya utk mengatur turn data1 dan data2 supaya muncul bergiliran
 // 	//soalnya udah pake mutex malah gak rapi, gk berubah2 jdi bingung
-// 	for !dataturu && data == "bisa" || dataturu && data == "coba" {
+// 	for dataturu && data != "bisa" || !dataturu && data != "coba" {
 // 		mutex.Unlock()
 // 		time.Sleep(time.Millisecond)
 // 		mutex.Lock()
