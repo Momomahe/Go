@@ -37,8 +37,9 @@ func (ctrl BookController) GetBooks(c *gin.Context) {
 
 		books = append(books, book)
 	}
-
-	c.JSON(http.StatusOK, books)
+	
+	c.JSON(http.StatusCreated, books) //201
+	//c.JSON(http.StatusOK, books) //200
 }
 func (ctrl BookController) CreateBook(c *gin.Context) {
 	book := model.Book{}
