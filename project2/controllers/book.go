@@ -22,8 +22,9 @@ func (c *Controllers) CreateBook(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	ctx.JSON(http.StatusOK, book)
+	
+	ctx.JSON(http.StatusCreated, book) //utk status code http 201
+	//ctx.JSON(http.StatusOK, book)  //utk status code http 201
 }
 func (c *Controllers) GetBook(ctx *gin.Context) {
 	bookID := ctx.Param("id")
