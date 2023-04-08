@@ -55,7 +55,10 @@ func LoginUser(ctx *gin.Context) {
 
 	err = db.Where("email = ?", user.Email).Take(&user).Error
 	if err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "User not found",
+			"error":   "The email and password you provided are not associated with an existing account",
+		})
 		return
 	}
 
