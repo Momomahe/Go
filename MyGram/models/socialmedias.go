@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/golang-jwt/jwt"
@@ -10,9 +11,11 @@ import (
 
 type SocialMedia struct {
 	GORMModel
-	Name             string `gorm:"not null" json:"name" validate:"required-Name is required"`
-	Social_Media_Url string `gorm:"not null" json:"social_media_url" validate:"required-Social_Media_Url is required"`
-	UserID           uint   `gorm:"not null" json:"user_id"`
+	Name             string    `gorm:"not null" json:"name" validate:"required-Name is required"`
+	Social_Media_Url string    `gorm:"not null" json:"social_media_url" validate:"required-Social_Media_Url is required"`
+	UserID           uint      `gorm:"not null" json:"user_id"`
+	CreatedAt        time.Time `json:"created_at",omitempty`
+	UpdatedAt        time.Time `json:"updated_at",omitempty`
 }
 
 func (u *SocialMedia) BeforeCreate(tx *gorm.DB) (err error) {

@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/golang-jwt/jwt"
@@ -10,10 +11,12 @@ import (
 
 type Photo struct {
 	GORMModel
-	Title     string `gorm:"not null" json:"title" validate:"required-Title is required"`
-	Caption   string `gorm:"not null" json:"caption" validate:"required-Caption is required"`
-	Photo_Url string `gorm:"not null" json:"photo_url" validate:"required-Photo_Url is required"`
-	UserID    uint   `gorm:"not null" json:"user_id"`
+	Title     string    `gorm:"not null" json:"title" validate:"required-Title is required"`
+	Caption   string    `gorm:"not null" json:"caption" validate:"required-Caption is required"`
+	Photo_Url string    `gorm:"not null" json:"photo_url" validate:"required-Photo_Url is required"`
+	UserID    uint      `gorm:"not null" json:"user_id"`
+	CreatedAt time.Time `json:"created_at",omitempty`
+	UpdatedAt time.Time `json:"updated_at",omitempty`
 }
 
 func (u *Photo) BeforeCreate(tx *gorm.DB) (err error) {

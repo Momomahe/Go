@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/golang-jwt/jwt"
@@ -10,9 +11,11 @@ import (
 
 type Comment struct {
 	GORMModel
-	Comment string `gorm:"not null" json:"comment" validate:"required-Comment is required"`
-	UserID  uint   `gorm:"not null" json:"user_id"`
-	PhotoID uint   `gorm:"not null" json:"photo_id"`
+	Message   string    `gorm:"not null" json:"message" validate:"required-Message is required"`
+	UserID    uint      `gorm:"not null" json:"user_id"`
+	PhotoID   uint      `gorm:"not null" json:"photo_id"`
+	CreatedAt time.Time `json:"created_at",omitempty`
+	UpdatedAt time.Time `json:"updated_at",omitempty`
 }
 
 func (u *Comment) BeforeCreate(tx *gorm.DB) (err error) {
@@ -23,17 +26,18 @@ func (u *Comment) BeforeCreate(tx *gorm.DB) (err error) {
 
 	u.UserID = uint(userData["id"].(float64))
 
-	_, err = govalidator.ValidateStruct(u)
+	// _, err = govalidator.ValidateStruct(u)
 
-	if err != nil {
-		return
-	}
+	// if err != nil {
+	// 	return
+	// }
 
-	photoData, exists := tx.Statement.Context.Value("photoData").(jwt.MapClaims)
-	if !exists {
-		return errors.New("photoData is missing in the context")
-	}
-	u.PhotoID = uint(photoData["id"].(float64))
+	// photoData, exists := tx.Statement.Context.Value("photoData").(jwt.MapClaims)
+	// if !exists {
+	// 	return errors.New("photoData is missing in the context")
+	// }
+	// u.PhotoID = uint(photoData["id"].(float64))
+
 	_, err = govalidator.ValidateStruct(u)
 	if err != nil {
 		return

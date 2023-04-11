@@ -46,3 +46,24 @@
 # DELETE http://localhost:3000/socialmedia/7
 # content-type: application/json
 # authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXRoQGdtYWlsLmNvbSIsImlkIjoxfQ.z17M3XQfONUSSdUGxkaLfOPRRdJ1dBnv7a6iXNpXjB8
+
+
+# POST http://localhost:3000/photo
+# content-type: application/json
+# authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXRoQGdtYWlsLmNvbSIsImlkIjoxfQ.z17M3XQfONUSSdUGxkaLfOPRRdJ1dBnv7a6iXNpXjB8
+
+# {
+#   "title" : "Poffffwwrsdfsdweewwr",
+#   "caption": "sdsvvasd@sdsdsdsd.com",
+#   "photo_url": "dsdsdfsddsdfsf"
+# }
+
+
+# POST http://localhost:3000/comment
+# content-type: application/json
+# authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXRoQGdtYWlsLmNvbSIsImlkIjoxfQ.z17M3XQfONUSSdUGxkaLfOPRRdJ1dBnv7a6iXNpXjB8
+
+# {
+#   "comment" : "peler",
+#   "photo_id" : 2
+# }

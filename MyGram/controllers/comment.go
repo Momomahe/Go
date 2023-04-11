@@ -12,12 +12,24 @@ import (
 func CreateComment(ctx *gin.Context) {
 	db := database.GetDB()
 	comment := models.Comment{}
+	photo := models.Photo{}
 
 	err := ctx.ShouldBindJSON(&comment)
 	if err != nil {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
+
+	////////////////////////////
+	err = db.WithContext(ctx).First(&photo, comment.PhotoID).Error
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "Photo not found",
+		})
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	////////////////////////////
 
 	err = db.WithContext(ctx).Create(&comment).Error
 	if err != nil {
@@ -56,7 +68,7 @@ func UpdateComment(ctx *gin.Context) {
 		return
 	}
 
-	err = db.WithContext(ctx).Model(&comment).Where("id=?", commentID).Updates(models.Comment{Comment: comment.Comment}).Error
+	err = db.WithContext(ctx).Model(&comment).Where("id=?", commentID).Updates(models.Comment{Message: comment.Message}).Error
 	if err != nil {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return

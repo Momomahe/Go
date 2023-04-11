@@ -36,7 +36,7 @@ func GetOnePhoto(ctx *gin.Context) {
 	err := db.WithContext(ctx).First(&photo, photoID).Error
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": "Product not found",
+			"message": "Photo not found",
 		})
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
