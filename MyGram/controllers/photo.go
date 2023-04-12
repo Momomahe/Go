@@ -21,6 +21,10 @@ func CreatePhoto(ctx *gin.Context) {
 
 	err = db.WithContext(ctx).Create(&photo).Error
 	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal server error",
+			"error":   err.Error(),
+		})
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
@@ -87,4 +91,20 @@ func DeletePhoto(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Photo has been deleted",
 	})
+}
+
+func GetAllPhoto(ctx *gin.Context) {
+	db := database.GetDB()
+	photoList := []models.Photo{}
+
+	err := db.WithContext(ctx).Find(&photoList).Error
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to get Ptoto Data",
+		})
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, photoList)
 }

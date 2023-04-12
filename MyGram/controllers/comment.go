@@ -20,19 +20,20 @@ func CreateComment(ctx *gin.Context) {
 		return
 	}
 
-	////////////////////////////
 	err = db.WithContext(ctx).First(&photo, comment.PhotoID).Error
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": "Photo not found",
 		})
-		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	////////////////////////////
 
 	err = db.WithContext(ctx).Create(&comment).Error
 	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal server error",
+			"error":   err.Error(),
+		})
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
@@ -48,7 +49,7 @@ func GetOneComment(ctx *gin.Context) {
 	err := db.WithContext(ctx).First(&comment, commentID).Error
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": "Product not found",
+			"message": "Comment not found",
 		})
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -99,4 +100,19 @@ func DeleteComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Comment has been deleted",
 	})
+}
+func GetAllComment(ctx *gin.Context) {
+	db := database.GetDB()
+	commentList := []models.Comment{}
+
+	err := db.WithContext(ctx).Find(&commentList).Error
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to get Comment data",
+		})
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, commentList)
 }

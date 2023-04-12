@@ -11,8 +11,8 @@ import (
 
 type SocialMedia struct {
 	GORMModel
-	Name             string    `gorm:"not null" json:"name" validate:"required-Name is required"`
-	Social_Media_Url string    `gorm:"not null" json:"social_media_url" validate:"required-Social_Media_Url is required"`
+	Name             string    `gorm:"not null" json:"name" valid:"required~Name is required and cannot be empty"`
+	Social_Media_Url string    `gorm:"not null" json:"social_media_url" valid:"required~Social Media Url is required and cannot be empty"`
 	UserID           uint      `gorm:"not null" json:"user_id"`
 	CreatedAt        time.Time `json:"created_at",omitempty`
 	UpdatedAt        time.Time `json:"updated_at",omitempty`

@@ -11,9 +11,9 @@ import (
 
 type Photo struct {
 	GORMModel
-	Title     string    `gorm:"not null" json:"title" validate:"required-Title is required"`
-	Caption   string    `gorm:"not null" json:"caption" validate:"required-Caption is required"`
-	Photo_Url string    `gorm:"not null" json:"photo_url" validate:"required-Photo_Url is required"`
+	Title     string    `gorm:"not null" json:"title" valid:"required~Title is required"`
+	Caption   string    `gorm:"not null" json:"caption" valid:"required~Caption is required"`
+	Photo_Url string    `gorm:"not null" json:"photo_url" valid:"required~Photo URL is required"`
 	UserID    uint      `gorm:"not null" json:"user_id"`
 	CreatedAt time.Time `json:"created_at",omitempty`
 	UpdatedAt time.Time `json:"updated_at",omitempty`

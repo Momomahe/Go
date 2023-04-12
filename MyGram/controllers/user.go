@@ -10,6 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Register godoc
+// @Summary Post details for a given Id
+// @Description post deatils of user corresponding to the input Id
+// @Tags user
+// @Accept json
+// @produse json@Param models.User true "Register"
+// @Success 201 (object) models.User
+// @Router /user [post]
 func Register(ctx *gin.Context) {
 	db := database.GetDB()
 	user := models.User{}
@@ -26,12 +34,21 @@ func Register(ctx *gin.Context) {
 			"message": "Internal server error",
 			"error":   err.Error(),
 		})
+		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	ctx.JSON(http.StatusCreated, user)
 }
 
+// Login godoc
+// @Summary Post details for a given Id
+// @Description post deatils of user corresponding to the input Id
+// @Tags user
+// @Accept json
+// @produse json@Param models.User true "Login"
+// @Success 201 (object) models.User
+// @Router /user [post]
 func Login(ctx *gin.Context) {
 	db := database.GetDB()
 	user := models.User{}

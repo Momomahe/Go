@@ -21,6 +21,10 @@ func CreateSocialMedia(ctx *gin.Context) {
 
 	err = db.WithContext(ctx).Create(&socialmedia).Error
 	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Internal server error",
+			"error":   err.Error(),
+		})
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
@@ -36,13 +40,29 @@ func GetOne(ctx *gin.Context) {
 	err := db.WithContext(ctx).First(&socialmedia, socialmediaID).Error
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": "Product not found",
+			"message": "Social Media not found",
 		})
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, socialmedia)
+}
+
+func GetAllSocialMedia(ctx *gin.Context) {
+	db := database.GetDB()
+	socialmediaList := []models.SocialMedia{}
+
+	err := db.WithContext(ctx).Find(&socialmediaList).Error
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to get Social Media data",
+		})
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, socialmediaList)
 }
 
 func UpdateSocialMedia(ctx *gin.Context) {

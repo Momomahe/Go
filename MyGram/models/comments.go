@@ -11,7 +11,7 @@ import (
 
 type Comment struct {
 	GORMModel
-	Message   string    `gorm:"not null" json:"message" validate:"required-Message is required"`
+	Message   string    `gorm:"not null" json:"message" valid:"required~Message is required"`
 	UserID    uint      `gorm:"not null" json:"user_id"`
 	PhotoID   uint      `gorm:"not null" json:"photo_id"`
 	CreatedAt time.Time `json:"created_at",omitempty`
