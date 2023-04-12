@@ -9,10 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ErrorResponse struct {
-	Message string `json:"message"`
-	Error   string `json:"error"`
-}
 type RegisterRequest struct {
 	UserName string `json:"username"`
 	Email    string `json:"email"`
@@ -28,8 +24,8 @@ type RegisterRequest struct {
 // @Produce json
 // @Param user body RegisterRequest true "The user to create"
 // @Success 201 {object} models.User
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 500 {object} helpers.ErrorResponse
 // @Router /user/register [post]
 func Register(ctx *gin.Context) {
 	db := database.GetDB()
@@ -37,7 +33,7 @@ func Register(ctx *gin.Context) {
 
 	err := ctx.ShouldBindJSON(&user)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, ErrorResponse{
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, helpers.ErrorResponse{
 			Message: "Bad request",
 			Error:   err.Error(),
 		})
@@ -46,7 +42,7 @@ func Register(ctx *gin.Context) {
 
 	err = db.Create(&user).Error
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, ErrorResponse{
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, helpers.ErrorResponse{
 			Message: "Internal server error",
 			Error:   err.Error(),
 		})
@@ -73,8 +69,8 @@ type LoginRequest struct {
 // @Produce json
 // @Param user body LoginRequest true "Login for authentication"
 // @Success 201 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 401 {object} ErrorResponse
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 401 {object} helpers.ErrorResponse
 // @Router /user/login [post]
 func Login(ctx *gin.Context) {
 	db := database.GetDB()
@@ -82,7 +78,7 @@ func Login(ctx *gin.Context) {
 
 	err := ctx.ShouldBindJSON(&user)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, ErrorResponse{
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, helpers.ErrorResponse{
 			Message: "Bad request",
 			Error:   err.Error(),
 		})
@@ -93,7 +89,7 @@ func Login(ctx *gin.Context) {
 
 	err = db.Where("email = ?", user.Email).Take(&user).Error
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, ErrorResponse{
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, helpers.ErrorResponse{
 			Message: "User not found",
 			Error:   "The email and password you provided are not associated with an existing account",
 		})
@@ -101,7 +97,7 @@ func Login(ctx *gin.Context) {
 	}
 
 	if !helpers.PasswordValid(user.Password, password) {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, ErrorResponse{
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, helpers.ErrorResponse{
 			Message: "Invalid Email or Password",
 			Error:   "You must fill in the correct email and password and have registered",
 		})

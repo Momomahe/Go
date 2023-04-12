@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"mygram/database"
+	"mygram/helpers"
 	"mygram/models"
 	"net/http"
 	"strconv"
@@ -9,25 +10,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ErrorResponse2 struct {
-	Message string `json:"message"`
-	Error   string `json:"error"`
-}
 type CreateSocial struct {
 	Name             string `json:"name"`
 	Social_Media_Url string `json:"social_media_url"`
 }
 
 // CreateSocialMedia godoc
-// @Summary CreateSocialMedia a new socialmedia
+// @Summary Create a new Social Media
 // @Description CreateSocialMedia a new socialmedia with the given information
-// @Tags socialmedia
+// @Tags Social Media
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer {access_token}"
 // @Param socialmedia body CreateSocial true "The social media to create"
 // @Success 201 {object} models.SocialMedia
-// @Failure 400 {object} ErrorResponse2
-// @Failure 500 {object} ErrorResponse2
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 500 {object} helpers.ErrorResponse
 // @Router /socialmedia/ [post]
 func CreateSocialMedia(ctx *gin.Context) {
 	db := database.GetDB()
@@ -35,24 +33,41 @@ func CreateSocialMedia(ctx *gin.Context) {
 
 	err := ctx.ShouldBindJSON(&socialmedia)
 	if err != nil {
-		ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, helpers.ErrorResponse{
+			Message: "Bad request",
+			Error:   err.Error(),
+		})
 		return
 	}
 
 	err = db.WithContext(ctx).Create(&socialmedia).Error
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Internal server error",
-			"error":   err.Error(),
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, helpers.ErrorResponse{
+			Message: "Internal server error",
+			Error:   err.Error(),
 		})
-		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	ctx.JSON(http.StatusCreated, socialmedia)
 }
 
-func GetOne(ctx *gin.Context) {
+type GetOneSocial struct {
+}
+
+// GetOneSocialMedia godoc
+// @Summary Get One Social Media
+// @Description Get One Social Media by ID Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer {access_token}"
+// @Param socialmedia body GetOneSocial true "The Social Media Has Been Obtained"
+// @Success 200 {object} models.SocialMedia
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 500 {object} helpers.ErrorResponse
+// @Router /socialmedia/{id} [get]
+func GetOneSocialMedia(ctx *gin.Context) {
 	db := database.GetDB()
 	socialmedia := models.SocialMedia{}
 	socialmediaID, _ := strconv.Atoi(ctx.Param("socialmediaID"))
@@ -69,6 +84,21 @@ func GetOne(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, socialmedia)
 }
 
+type GetAllSocial struct {
+}
+
+// GetAllSocialMedia godoc
+// @Summary Get All Social Media
+// @Description Get All Social Media Which Has Been Made
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer {access_token}"
+// @Param socialmedia body GetAllSocial true "The Social Media Has Been Obtained"
+// @Success 200 {object} models.SocialMedia
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 500 {object} helpers.ErrorResponse
+// @Router /socialmedia [get]
 func GetAllSocialMedia(ctx *gin.Context) {
 	db := database.GetDB()
 	socialmediaList := []models.SocialMedia{}
@@ -85,6 +115,23 @@ func GetAllSocialMedia(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, socialmediaList)
 }
 
+type UpdateSocial struct {
+	Name             string `json:"name"`
+	Social_Media_Url string `json:"social_media_url"`
+}
+
+// UpdateSocialMedia godoc
+// @Summary Update Social Media
+// @Description Update Social Media by ID Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer {access_token}"
+// @Param socialmedia body UpdateSocial true "The Social Media Has Been Updated"
+// @Success 200 {object} models.SocialMedia
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 500 {object} helpers.ErrorResponse
+// @Router /socialmedia/{id} [put]
 func UpdateSocialMedia(ctx *gin.Context) {
 	db := database.GetDB()
 	socialmedia := models.SocialMedia{}
@@ -105,6 +152,21 @@ func UpdateSocialMedia(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, socialmedia)
 }
 
+type DeleteSocial struct {
+}
+
+// DeleteSocialMedia godoc
+// @Summary Delete Social Media
+// @Description Delete Social Media by ID Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer {access_token}"
+// @Param socialmedia body DeleteSocial true "The Social Media Has Been Deleted"
+// @Success 200 {object} models.SocialMedia
+// @Failure 400 {object} helpers.ErrorResponse
+// @Failure 500 {object} helpers.ErrorResponse
+// @Router /socialmedia/{id} [delete]
 func DeleteSocialMedia(ctx *gin.Context) {
 	db := database.GetDB()
 	socialmediaID, _ := strconv.Atoi(ctx.Param("socialmediaID"))
