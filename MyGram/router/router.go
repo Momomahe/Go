@@ -1,25 +1,40 @@
 package router
 
 import (
-	_ "golang-crud-gin/docs"
 	"mygram/controllers"
 	"mygram/middlewares"
 
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "mygram/docs"
 )
 
-// @title User API
-// @version 1.0
-// @description This a sample service for managing cars
-// @termsOfService http://swagger.io/terms/
-// @contact.name API Support
-// @contact.email soberkoder@swagger.io
-// @licence.name Apache 2.0
-// @licence.url http://www.apache.org/licences/LICENCE-2.0.html
-// @host localhost:3000
-// @BasePath /
+// @title           Swagger Example API
+// @version         1.0
+// @description     This is a sample server celler server.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:3000
+// @BasePath  /
+
+// @securityDefinitions.basic  BasicAuth
+
+// @externalDocs.description  OpenAPI
+// @externalDocs.url          https://swagger.io/resources/open-api/
 func New() *gin.Engine {
 	r := gin.Default()
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	userRouter := r.Group("user")
 	{
@@ -32,6 +47,7 @@ func New() *gin.Engine {
 	socialmediaRouter := r.Group("socialmedia")
 	{
 		socialmediaRouter.Use(middlewares.Authentication())
+		//CreateSocialMedia
 		socialmediaRouter.GET("/:socialmediaID", controllers.GetOne)
 		socialmediaRouter.GET("/", controllers.GetAllComment)
 		socialmediaRouter.POST("/", controllers.CreateSocialMedia)

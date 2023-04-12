@@ -9,6 +9,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type ErrorResponse2 struct {
+	Message string `json:"message"`
+	Error   string `json:"error"`
+}
+type CreateSocial struct {
+	Name             string `json:"name"`
+	Social_Media_Url string `json:"social_media_url"`
+}
+
+// CreateSocialMedia godoc
+// @Summary CreateSocialMedia a new socialmedia
+// @Description CreateSocialMedia a new socialmedia with the given information
+// @Tags socialmedia
+// @Accept json
+// @Produce json
+// @Param socialmedia body CreateSocial true "The social media to create"
+// @Success 201 {object} models.SocialMedia
+// @Failure 400 {object} ErrorResponse2
+// @Failure 500 {object} ErrorResponse2
+// @Router /socialmedia/ [post]
 func CreateSocialMedia(ctx *gin.Context) {
 	db := database.GetDB()
 	socialmedia := models.SocialMedia{}
